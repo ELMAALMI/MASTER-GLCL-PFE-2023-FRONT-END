@@ -1,0 +1,20 @@
+export const AppIcons = {
+    profile: 'gg:profile',
+    setting: 'icon-park-outline:setting-two',
+    logout: 'ic:twotone-logout',
+    arrowDown: 'material-symbols:arrow-drop-down-rounded',
+    menu: 'ic:round-menu',
+    home: 'material-symbols:home-outline-rounded',
+    server: 'mdi:server-network',
+    service: 'carbon:cloud-service-management',
+    settings: 'ep:setting',
+    warning: 'mdi:shield-warning-outline',
+    admin: 'ic:outline-admin-panel-settings',
+    add: 'material-symbols:add',
+    edit: 'material-symbols:edit-square-outline-rounded',
+    delete: 'majesticons:delete-bin-line',
+    reload: 'tabler:reload',
+    close: 'solar:close-circle-linear',
+    arrowLeft: 'solar:alt-arrow-left-line-duotone',
+    arrowRight: 'solar:alt-arrow-right-line-duotone'
+};
