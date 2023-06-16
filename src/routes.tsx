@@ -3,7 +3,7 @@ import { useRoutes } from 'react-router-dom';
 import HomeView from './views/Home.view';
 import LoginView from './views/Login-view';
 import ServerView from './views/Server.view';
-import ServiceView from './views/Service.view';
+import ApplicationView from './views/Application.view';
 
 const AppRouters: React.FC = () => {
     return useRoutes([
@@ -17,8 +17,8 @@ const AppRouters: React.FC = () => {
             element: <ServerView />
         },
         {
-            path: '/services',
-            element: <ServiceView />
+            path: '/applications',
+            element: <ApplicationView />
         },
         {
             path: '/settings',

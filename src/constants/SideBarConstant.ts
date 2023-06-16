@@ -12,9 +12,9 @@ export const SIDE_BAR_URLS = [
         path: '/servers'
     },
     {
-        name: 'Services',
+        name: 'Applications',
         icon: AppIcons.service,
-        path: '/services'
+        path: '/applications'
     },
     {
         name: 'Settings',

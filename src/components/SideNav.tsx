@@ -24,7 +24,7 @@ const Sidebar: React.FC<Props> = ({ setSidebarOpen, sidebarOpen }) => {
                     {/* //logo */}
                     <NavLink end to="/" className="block text-sm font-medium text-white">
                         <Icon icon={'carbon:logo-xing'} fontSize={20} />
-                        Project MNG.
+                        Project LOGGER.
                     </NavLink>
                     {/* //close button */}
                     <button

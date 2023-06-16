@@ -1,4 +1,4 @@
-import Server from './Server';
-import Service from './Service';
+import Application from './Server';
+import Service from './Application;';
 
-export type { Server, Service };
+export type { Application, Service };

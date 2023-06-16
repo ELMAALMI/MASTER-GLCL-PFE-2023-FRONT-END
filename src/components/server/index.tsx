@@ -1,6 +1,8 @@
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hook';
+import serverActionThunk from '@/store/app/server/server-action-thunk';
 import { AppIcons } from '@/utils/AppIcons';
 import { IconButton, Input } from '@material-tailwind/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Icon from '../Icon';
 import PageHead from '../PageHead';
 import SideModal from '../SideModal';
@@ -9,7 +11,13 @@ import Pagination from '../ui/Pagination';
 import ServerForm from './ServerForm';
 
 const ServerPage: React.FC = () => {
+    const { servers } = useAppSelector((state) => state.server);
+    const dispatch = useAppDispatch();
     const [openForm, setOpenForm] = useState(false);
+
+    useEffect(() => {
+        dispatch(serverActionThunk.fetch());
+    }, []);
     return (
         <div className="flex w-full flex-col">
             <PageHead
@@ -37,6 +45,9 @@ const ServerPage: React.FC = () => {
                                 @IP
                             </th>
                             <th scope="col" className="py-2 px-1">
+                                Username
+                            </th>
+                            <th scope="col" className="py-2 px-1">
                                 Password
                             </th>
                             <th scope="col" className="py-2 px-1">
@@ -53,25 +64,28 @@ const ServerPage: React.FC = () => {
                             </th>
                         </tr>
                     }
-                    content={[...Array(10)].map((item, idx) => (
+                    content={servers.map((item, idx) => (
                         <tr className="bg-white border-b hover:bg-gray-300 text-gray-800">
                             <td scope="row" className="py-1 px-1 font-medium">
-                                {idx}
+                                {item.id}
                             </td>
                             <td scope="row" className="py-1 px-1 font-medium">
-                                apache2 server
+                                {item.name}
                             </td>
                             <td scope="row" className="py-1 px-1 font-medium">
-                                192.168.1.155
+                                {item.host}
                             </td>
                             <td scope="row" className="py-1 px-1 font-medium">
-                                test@apppp
+                                {item.username}
                             </td>
                             <td scope="row" className="py-1 px-1 font-medium">
-                                Ubuntu 20.04
+                                {item.password}
                             </td>
                             <td scope="row" className="py-1 px-1 font-medium">
-                                Running
+                                {item.os?.name}
+                            </td>
+                            <td scope="row" className="py-1 px-1 font-medium">
+                                {item.status}
                             </td>
                             <td scope="row" className="py-1 px-1 font-medium">
                                 Apache2 / Ngnix / Tomcate

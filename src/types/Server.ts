@@ -1,9 +1,13 @@
+import { OperatingSystem } from './OperatingSystem';
+
 type Server = {
-    id: string;
-    ip: string;
-    password: string;
-    os: string;
-    status: any;
-    services: [];
+    id?: string;
+    name?: string;
+    host?: string;
+    username?: string;
+    password?: string;
+    os?: OperatingSystem | null;
+    status?: any;
+    services?: [];
 };
 export default Server;

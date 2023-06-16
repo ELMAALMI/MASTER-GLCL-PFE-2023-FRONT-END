@@ -16,5 +16,8 @@ export const AppIcons = {
     reload: 'tabler:reload',
     close: 'solar:close-circle-linear',
     arrowLeft: 'solar:alt-arrow-left-line-duotone',
-    arrowRight: 'solar:alt-arrow-right-line-duotone'
+    arrowRight: 'solar:alt-arrow-right-line-duotone',
+    connection: 'icon-park-outline:connection-point',
+    plus: 'ic:round-plus',
+    os: 'cib:osi'
 };

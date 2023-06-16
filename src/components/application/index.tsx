@@ -1,15 +1,17 @@
+import React, { useState } from 'react';
 import { AppIcons } from '@/utils/AppIcons';
 import { IconButton, Input } from '@material-tailwind/react';
-import React, { useState } from 'react';
 import Icon from '../Icon';
 import PageHead from '../PageHead';
 import SideModal from '../SideModal';
 import Table from '../Table';
 import Pagination from '../ui/Pagination';
-import ServiceForm from './ServiceForm';
+import ApplicationForm from './ApplicationForm';
+import { useAppSelector } from '@/hooks/redux-hook';
 
-const ServicePage: React.FC = () => {
+const ApplicationPage: React.FC = () => {
     const [openForm, setOpenForm] = useState(false);
+    const { applications } = useAppSelector((state) => state.application);
     return (
         <div className="flex w-full flex-col">
             <PageHead
@@ -38,7 +40,10 @@ const ServicePage: React.FC = () => {
                             </th>
 
                             <th scope="col" className="py-2 px-1">
-                                Log Path
+                                Access Log Path
+                            </th>
+                            <th scope="col" className="py-2 px-1">
+                                Error Log Path
                             </th>
                             <th scope="col" className="py-2 px-1">
                                 Status
@@ -48,21 +53,24 @@ const ServicePage: React.FC = () => {
                             </th>
                         </tr>
                     }
-                    content={[...Array(10)].map((item, idx) => (
+                    content={applications.map((item, idx) => (
                         <tr className="bg-white border-b hover:bg-gray-300 text-gray-800">
                             <td scope="row" className="py-1 px-1 font-medium">
-                                {idx}
+                                {item.id}
                             </td>
                             <td scope="row" className="py-1 px-1 font-medium">
                                 apache2
+                                {item.name}
                             </td>
                             <td scope="row" className="py-1 px-1 font-medium">
-                                10.0.5
+                                {item.version}
                             </td>
                             <td scope="row" className="py-1 px-1 font-medium">
-                                /var/log/apache2
+                                {item.log_access_path}
                             </td>
-
+                            <td scope="row" className="py-1 px-1 font-medium">
+                                {item.log_error_path}
+                            </td>
                             <td scope="row" className="py-1 px-1 font-medium">
                                 running
                             </td>
@@ -80,14 +88,15 @@ const ServicePage: React.FC = () => {
                         </tr>
                     ))}
                 />
-                <div className="mt-3">
-                    <Pagination />
-                </div>
             </div>
-            <SideModal open={openForm} title="new service" handleClose={() => setOpenForm(false)}>
-                <ServiceForm />
+            <SideModal
+                open={openForm}
+                title="New Application"
+                handleClose={() => setOpenForm(false)}
+            >
+                <ApplicationForm />
             </SideModal>
         </div>
     );
 };
-export default ServicePage;
+export default ApplicationPage;

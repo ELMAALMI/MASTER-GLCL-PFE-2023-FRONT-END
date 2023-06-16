@@ -4,7 +4,7 @@ import Icon from './Icon';
 
 const SideModal: React.FC<Props> = ({ children, handleClose, open, title }) => {
     return open ? (
-        <div className="fixed z-50 inset-0 overflow-y-auto transition duration-100">
+        <div className="fixed z-50 inset-0 overflow-y-auto fadeOut 5s ease-in-out">
             <div className="fixed inset-0 bg-gray-500  bg-opacity-20 transition-opacity"></div>
             <div className="inline-block bg-white w-full max-w-xl transform absolute right-0 shadow-sm">
                 <div className="flex justify-between p-3 bg-slate-300 text-white">
