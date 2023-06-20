@@ -9,7 +9,10 @@ import serverActionThunk from '@/store/app/server/server-action-thunk';
 import Application from '@/types/Application;';
 import applicationActionThunk from '@/store/app/application/application-action-thunk';
 
-const ApplicationForm: React.FC = () => {
+interface Props {
+    app?: Application | null;
+}
+const ApplicationForm: React.FC<Props> = ({ app }) => {
     const dispatch = useAppDispatch();
     const validationSchema = Yup.object().shape({
         name: Yup.string().required('name is required'),
@@ -17,35 +20,41 @@ const ApplicationForm: React.FC = () => {
         log_access_path: Yup.string().required('name is required'),
         log_error_path: Yup.string().required('name is required'),
         regex: Yup.string().required('name is required'),
-        idx_ip: Yup.number().max(8).min(0).required('name is required'),
-        idx_agent: Yup.number().max(8).min(0).required('name is required'),
-        idx_date: Yup.number().max(8).min(0).required('name is required'),
-        idx_method: Yup.number().max(8).min(0).required('name is required'),
-        idx_path: Yup.number().max(8).min(0).required('name is required'),
-        idx_ref_url: Yup.number().max(8).min(0).required('name is required'),
-        idx_req_size: Yup.number().max(8).min(0).required('name is required'),
-        idx_status: Yup.number().max(8).min(0).required('name is required')
+        idx_ip: Yup.number().max(8).min(1).required('name is required'),
+        idx_agent: Yup.number().max(8).min(1).required('name is required'),
+        idx_date: Yup.number().max(8).min(1).required('name is required'),
+        idx_method: Yup.number().max(8).min(1).required('name is required'),
+        idx_path: Yup.number().max(8).min(1).required('name is required'),
+        idx_ref_url: Yup.number().max(8).min(1).required('name is required'),
+        idx_req_size: Yup.number().max(8).min(1).required('name is required'),
+        idx_status: Yup.number().max(8).min(1).required('name is required')
     });
     const formik = useFormik<Application>({
         initialValues: {
-            name: '',
-            version: '',
-            log_access_path: '',
-            log_error_path: '',
-            regex: '',
-            idx_ip: -1,
-            idx_agent: -1,
-            idx_date: -1,
-            idx_method: -1,
-            idx_path: -1,
-            idx_ref_url: -1,
-            idx_req_size: -1,
-            idx_status: -1
+            name: app?.name ?? '',
+            version: app?.version ?? '',
+            log_access_path: app?.log_access_path ?? '',
+            log_error_path: app?.log_error_path ?? '',
+            regex: app?.regex ?? '',
+            idx_ip: app?.idx_ip ?? 0,
+            idx_agent: app?.idx_agent ?? 0,
+            idx_date: app?.idx_date ?? 0,
+            idx_method: app?.idx_method ?? 0,
+            idx_path: app?.idx_path ?? 0,
+            idx_ref_url: app?.idx_ref_url ?? 0,
+            idx_req_size: app?.idx_req_size ?? 0,
+            idx_status: app?.idx_status ?? 0
         },
         validationSchema,
-        onSubmit: (data) => {
+        onSubmit: (data, { resetForm }) => {
             console.log(data);
-            dispatch(applicationActionThunk.create(data));
+            if (app) {
+                data.id = app.id;
+                dispatch(applicationActionThunk.update(data));
+            } else {
+                dispatch(applicationActionThunk.create(data));
+                resetForm();
+            }
         }
     });
     const { errors, getFieldProps, touched } = formik;

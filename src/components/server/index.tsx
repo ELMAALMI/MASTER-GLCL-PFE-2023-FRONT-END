@@ -1,7 +1,8 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/redux-hook';
 import serverActionThunk from '@/store/app/server/server-action-thunk';
+import Server from '@/types/Server';
 import { AppIcons } from '@/utils/AppIcons';
-import { IconButton, Input } from '@material-tailwind/react';
+import { IconButton, Input, Tooltip } from '@material-tailwind/react';
 import React, { useEffect, useState } from 'react';
 import Icon from '../Icon';
 import PageHead from '../PageHead';
@@ -11,13 +12,26 @@ import Pagination from '../ui/Pagination';
 import ServerForm from './ServerForm';
 
 const ServerPage: React.FC = () => {
-    const { servers } = useAppSelector((state) => state.server);
+    const { servers, pageNum, totalElements, totalPages } = useAppSelector((state) => state.server);
     const dispatch = useAppDispatch();
+    const [selectedServer, setSelectedServer] = useState<Server | null>(null);
     const [openForm, setOpenForm] = useState(false);
 
     useEffect(() => {
         dispatch(serverActionThunk.fetch());
     }, []);
+
+    const handleUpdate = (item: Server) => {
+        setSelectedServer(item);
+        setOpenForm(!openForm);
+    };
+    const handleClose = () => {
+        setSelectedServer(null);
+        setOpenForm(!openForm);
+    };
+    const onPagechange = (pageNum: number) => {
+        console.log(pageNum);
+    };
     return (
         <div className="flex w-full flex-col">
             <PageHead
@@ -88,28 +102,41 @@ const ServerPage: React.FC = () => {
                                 {item.status}
                             </td>
                             <td scope="row" className="py-1 px-1 font-medium">
-                                Apache2 / Ngnix / Tomcate
+                                {item.applications?.map((item) => (
+                                    <span key={item.host}> {item.name} </span>
+                                ))}
                             </td>
                             <td scope="row" className="py-1 px-1 font-medium flex gap-2 text-sm">
-                                <IconButton size="sm" variant="outlined" color="blue">
-                                    <Icon name={AppIcons.edit} size={20} />
-                                </IconButton>
-                                <IconButton size="sm" variant="outlined" color="red">
-                                    <Icon name={AppIcons.delete} size={20} />
-                                </IconButton>
-                                <IconButton size="sm" variant="outlined" color="green">
-                                    <Icon name={AppIcons.reload} size={20} />
-                                </IconButton>
+                                <Tooltip content="update" placement="bottom">
+                                    <IconButton
+                                        onClick={() => handleUpdate(item)}
+                                        size="sm"
+                                        variant="outlined"
+                                        color="blue"
+                                    >
+                                        <Icon name={AppIcons.edit} size={20} />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip content="delete" placement="bottom">
+                                    <IconButton size="sm" variant="outlined" color="red">
+                                        <Icon name={AppIcons.delete} size={20} />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip content="reload" placement="bottom">
+                                    <IconButton size="sm" variant="outlined" color="green">
+                                        <Icon name={AppIcons.reload} size={20} />
+                                    </IconButton>
+                                </Tooltip>
                             </td>
                         </tr>
                     ))}
                 />
                 <div className="mt-3">
-                    <Pagination />
+                    <Pagination totalePage={totalPages} onPageChange={onPagechange} />
                 </div>
             </div>
-            <SideModal open={openForm} title="new server" handleClose={() => setOpenForm(false)}>
-                <ServerForm />
+            <SideModal open={openForm} title="new server" handleClose={handleClose}>
+                <ServerForm server={selectedServer} />
             </SideModal>
         </div>
     );

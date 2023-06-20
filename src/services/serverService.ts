@@ -1,5 +1,6 @@
+import Server from '@/types/Server';
+import { SshCred } from '@/types/ssh';
 import axios from 'axios';
-import { Server } from '@/types/index';
 
 class ServerService {
     private URI = '/servers';
@@ -16,6 +17,10 @@ class ServerService {
     }
     async findAll() {
         const res = await axios.get(this.URI);
+        return res.data;
+    }
+    async sshConnection(data: SshCred) {
+        const res = await axios.post(this.URI + '/check-connection', data);
         return res.data;
     }
 }

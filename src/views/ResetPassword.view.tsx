@@ -10,7 +10,7 @@ import ErrorField from '@/components/ErrorField';
 import { AppIcons } from '@/utils/AppIcons';
 import authActionThunk from '@/store/app/auth/auth-action-thunk';
 
-const LoginView: React.FC = () => {
+const ResetPasswordView: React.FC = () => {
     const { isAuthenticated } = useAppSelector((state) => state.auth);
     const [passwordField, setPasswordField] = useState(true);
     const dispatch = useAppDispatch();
@@ -21,14 +21,12 @@ const LoginView: React.FC = () => {
         }
     }, [isAuthenticated]);
     const validationSchema = Yup.object().shape({
-        email: Yup.string().email().required(),
-        password: Yup.string().required()
+        email: Yup.string().email().required()
     });
 
-    const formik = useFormik<Creds>({
+    const formik = useFormik({
         initialValues: {
-            email: '',
-            password: ''
+            email: ''
         },
         onSubmit: async (data, { setFieldError }) => {
             const res = await dispatch(authActionThunk.login(data));
@@ -64,28 +62,15 @@ const LoginView: React.FC = () => {
                             size="lg"
                         />
                         <ErrorField message={errors.email} />
-                        <Input
-                            {...getFieldProps('password')}
-                            error={Boolean(errors.password && touched.password)}
-                            variant="outlined"
-                            label="password"
-                            size="lg"
-                            type={passwordField ? 'password' : 'text'}
-                            icon={
-                                <span onClick={handlePasswordIconClick} className="cursor-pointer">
-                                    <Icon name={passwordField ? AppIcons.closeEye : AppIcons.eye} />
-                                </span>
-                            }
-                        />
-                        <ErrorField message={errors.password} />
+
                         <div className="flex w-full flex-col">
                             <div className="text-sm self-end">
                                 <a
                                     href="#"
-                                    onClick={() => navigate('/reset-password')}
+                                    onClick={() => navigate('/login')}
                                     className="font-medium text-blue-600 hover:text-blue-500"
                                 >
-                                    forget the password ?
+                                    back to Login page
                                 </a>
                             </div>
                         </div>
@@ -99,10 +84,10 @@ const LoginView: React.FC = () => {
                             >
                                 <Icon
                                     name={
-                                        isSubmitting ? 'line-md:loading-loop' : 'ri:login-box-line'
+                                        isSubmitting ? 'line-md:loading-loop' : 'fluent-mdl2:reset'
                                     }
                                 />
-                                Sign In
+                                Reset
                             </Button>
                         </div>
                     </Form>
@@ -111,4 +96,4 @@ const LoginView: React.FC = () => {
         </div>
     );
 };
-export default LoginView;
+export default ResetPasswordView;

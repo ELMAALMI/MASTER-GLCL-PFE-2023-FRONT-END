@@ -3,18 +3,27 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface ServerState {
     servers: Server[];
+    totalPages: number;
+    totalElements: number;
+    pageNum: number;
 }
 
 const ini_state: ServerState = {
-    servers: []
+    servers: [],
+    pageNum: 0,
+    totalElements: 0,
+    totalPages: 0
 };
 
 const serverSlice = createSlice({
     name: 'server/slice',
     initialState: ini_state,
     reducers: {
-        set(state, { payload }: PayloadAction<Server[]>) {
-            state.servers = payload;
+        set(state, { payload }: PayloadAction<ServerState>) {
+            state.servers = payload.servers;
+            state.pageNum = payload.pageNum;
+            state.totalElements = payload.totalElements;
+            state.totalPages = payload.totalPages;
         },
         update(state, { payload }: PayloadAction<Server>) {
             const idx = state.servers.findIndex((item) => item.id === payload.id);

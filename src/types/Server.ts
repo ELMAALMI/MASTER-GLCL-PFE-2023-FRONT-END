@@ -1,3 +1,4 @@
+import { Application } from '.';
 import { OperatingSystem } from './OperatingSystem';
 
 type Server = {
@@ -8,6 +9,6 @@ type Server = {
     password?: string;
     os?: OperatingSystem | null;
     status?: any;
-    services?: [];
+    applications?: Application[];
 };
 export default Server;

@@ -10,24 +10,36 @@ import {
 } from '@material-tailwind/react';
 import Icon from './Icon';
 import { AppIcons } from '@/utils/AppIcons';
+import { useAppDispatch } from '@/hooks/redux-hook';
+import authActionThunk from '@/store/app/auth/auth-action-thunk';
 
-const profileMenuItems = [
-    {
-        label: 'Profile',
-        icon: AppIcons.profile
-    },
-    {
-        label: 'Settings',
-        icon: AppIcons.setting
-    },
-    {
-        label: 'Sign Out',
-        icon: AppIcons.logout
-    }
-];
 const ProfileMenu = () => {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const dispatch = useAppDispatch();
     const closeMenu = () => setIsMenuOpen(false);
+    const profileMenuItems = [
+        {
+            label: 'Profile',
+            icon: AppIcons.profile,
+            action: () => {
+                dispatch(authActionThunk.logout());
+            }
+        },
+        {
+            label: 'Settings',
+            icon: AppIcons.setting,
+            action: () => {
+                dispatch(authActionThunk.logout());
+            }
+        },
+        {
+            label: 'Sign Out',
+            icon: AppIcons.logout,
+            action: () => {
+                dispatch(authActionThunk.logout());
+            }
+        }
+    ];
 
     return (
         <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
@@ -48,12 +60,15 @@ const ProfileMenu = () => {
                 </Button>
             </MenuHandler>
             <MenuList className="p-1">
-                {profileMenuItems.map(({ label, icon }, key) => {
+                {profileMenuItems.map(({ label, icon, action }, key) => {
                     const isLastItem = key === profileMenuItems.length - 1;
                     return (
                         <MenuItem
                             key={label}
-                            onClick={closeMenu}
+                            onClick={() => {
+                                closeMenu();
+                                action();
+                            }}
                             className={`flex items-center gap-2 rounded ${
                                 isLastItem
                                     ? 'hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10'

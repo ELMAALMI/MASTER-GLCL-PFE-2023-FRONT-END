@@ -19,5 +19,7 @@ export const AppIcons = {
     arrowRight: 'solar:alt-arrow-right-line-duotone',
     connection: 'icon-park-outline:connection-point',
     plus: 'ic:round-plus',
-    os: 'cib:osi'
+    os: 'cib:osi',
+    eye: 'ic:baseline-remove-red-eye',
+    closeEye: 'mdi:eye-off'
 };

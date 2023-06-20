@@ -7,34 +7,58 @@ import Server from '@/types/Server';
 import * as Yup from 'yup';
 import serverActionThunk from '@/store/app/server/server-action-thunk';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux-hook';
-import OperatingSystemForm from '../operatingSystem/operatingSystemForm';
 import operatingSystemActionThunk from '@/store/app/operatingSystem/OperatingSystemActionThunk';
 import OperatingSystemDialog from '../operatingSystem/OperatingSystemDialog';
+import Swal from 'sweetalert2';
+import applicationActionThunk from '@/store/app/application/application-action-thunk';
 
-const ServerForm: React.FC = () => {
+interface Props {
+    server?: Server | null;
+}
+
+const ServerForm: React.FC<Props> = ({ server }) => {
     const dispatch = useAppDispatch();
     const [openOperatingSystemDialog, setOpenOperatingSystemDialog] = useState(false);
     const { operatingSystems } = useAppSelector((state) => state.operatingSystem);
+    const { applications } = useAppSelector((state) => state.application);
 
     useEffect(() => {
         dispatch(operatingSystemActionThunk.fetch());
+        dispatch(applicationActionThunk.fetch());
+        if (server) {
+            setFieldValue('os', server.os?.id);
+            setFieldValue(
+                'services',
+                server.applications?.map((item) => item.id)
+            );
+        }
     }, []);
 
     const validationSchema = Yup.object().shape({
         name: Yup.string().required('name is required'),
         os: Yup.object().required('os is required'),
+        applications: Yup.array().required('os is required'),
         host: Yup.string().required('host is required'),
         username: Yup.string().required('username is required'),
         password: Yup.string().required('password is required')
     });
+    const testServerConnection = async () => {
+        const { host, username, password } = values;
+        if (errors.host || errors.username || errors.password) {
+            return;
+        }
+        if (host && username && password) {
+            Swal.fire({});
+        }
+    };
     const formik = useFormik<Server>({
         initialValues: {
-            name: '',
+            name: server?.name ?? '',
             os: {},
-            password: '',
-            username: '',
-            host: '',
-            services: []
+            password: server?.password ?? '',
+            username: server?.username ?? '',
+            host: server?.host ?? '',
+            applications: []
         },
         onSubmit: async (data) => {
             await dispatch(serverActionThunk.create(data));
@@ -72,6 +96,7 @@ const ServerForm: React.FC = () => {
                         type="password"
                     />
                     <Button
+                        onClick={() => testServerConnection()}
                         size="sm"
                         className="flex w-52 justify-center items-center gap-2 bg-green-700"
                     >
@@ -80,7 +105,7 @@ const ServerForm: React.FC = () => {
                     </Button>
                     <div className="flex justify-between gap-3">
                         <Select
-                            value={values.id}
+                            value={values.os?.id + '' ?? ''}
                             error={Boolean(errors.os && touched.os)}
                             color="blue"
                             label="OS"
@@ -103,12 +128,16 @@ const ServerForm: React.FC = () => {
                             <Icon name={AppIcons.plus} />
                         </Button>
                     </div>
-                    <Select color="blue" label="Services">
-                        <Option>Apache2</Option>
-                        <Option>Tomecat</Option>
-                        <Option>Ngnix</Option>
-                        <Option>Mysql</Option>
-                        <Option>Mongodb</Option>
+                    <Select
+                        onChange={(e) => {
+                            setFieldValue('applications', [{ id: e }]);
+                        }}
+                        color="blue"
+                        label="Services"
+                    >
+                        {applications.map((item) => (
+                            <Option value={item.id + ''}> {item.name} </Option>
+                        ))}
                     </Select>
                     <Button
                         size="sm"
