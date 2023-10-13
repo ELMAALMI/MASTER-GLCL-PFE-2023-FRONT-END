@@ -16,11 +16,11 @@ export const SIDE_BAR_URLS = [
         icon: AppIcons.service,
         path: '/applications'
     },
-    {
-        name: 'Settings',
-        icon: AppIcons.settings,
-        path: '/settings'
-    },
+    // {
+    //     name: 'Settings',
+    //     icon: AppIcons.settings,
+    //     path: '/settings'
+    // },
     {
         name: 'Alerts',
         icon: AppIcons.warning,

@@ -7,6 +7,7 @@ import ApplicationView from './views/Application.view';
 import PrivateRoute from './utils/PrivateRoute';
 import ResetPasswordView from './views/ResetPassword.view';
 import UserView from './views/User.view';
+import AlertView from './views/Alert.view';
 
 const AppRouters: React.FC = () => {
     return useRoutes([
@@ -47,7 +48,7 @@ const AppRouters: React.FC = () => {
             path: '/alerts',
             element: (
                 <PrivateRoute>
-                    <ApplicationView />
+                    <AlertView />
                 </PrivateRoute>
             )
         },

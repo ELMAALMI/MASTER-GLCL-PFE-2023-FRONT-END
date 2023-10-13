@@ -1,7 +1,12 @@
+import { Role } from './Role';
+
 type User = {
-    id?: string;
+    id?: number;
     email?: string;
-    role?: string;
+    username?: string;
+    password?: string;
+    role?: Role;
+    active?: boolean;
 };
 
 export default User;

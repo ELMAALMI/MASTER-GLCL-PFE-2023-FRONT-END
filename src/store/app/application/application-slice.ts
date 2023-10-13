@@ -1,5 +1,4 @@
 import Application from '@/types/Application;';
-import { OperatingSystem } from '@/types/OperatingSystem';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface ApplicationState {

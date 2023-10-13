@@ -45,7 +45,7 @@ class AuthActionThunk {
                     })
                 );
             } catch (e) {
-                ErrorAlert('', 'we have a problem try again');
+                // ErrorAlert('', 'we have a problem try again');
                 console.log(e);
             }
         };

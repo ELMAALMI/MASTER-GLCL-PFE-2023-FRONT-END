@@ -21,5 +21,6 @@ export const AppIcons = {
     plus: 'ic:round-plus',
     os: 'cib:osi',
     eye: 'ic:baseline-remove-red-eye',
-    closeEye: 'mdi:eye-off'
+    closeEye: 'mdi:eye-off',
+    generatePwd: 'ph:password'
 };

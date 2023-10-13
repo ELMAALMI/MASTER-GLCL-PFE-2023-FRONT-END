@@ -11,6 +11,7 @@ import operatingSystemActionThunk from '@/store/app/operatingSystem/OperatingSys
 import OperatingSystemDialog from '../operatingSystem/OperatingSystemDialog';
 import Swal from 'sweetalert2';
 import applicationActionThunk from '@/store/app/application/application-action-thunk';
+import ErrorField from '../ErrorField';
 
 interface Props {
     server?: Server | null;
@@ -48,7 +49,9 @@ const ServerForm: React.FC<Props> = ({ server }) => {
             return;
         }
         if (host && username && password) {
-            Swal.fire({});
+            Swal.fire({
+                title: 'Host and username and password is required'
+            });
         }
     };
     const formik = useFormik<Server>({
@@ -70,31 +73,45 @@ const ServerForm: React.FC<Props> = ({ server }) => {
         <div className="w-full flex flex-col justify-center">
             <FormikProvider value={formik}>
                 <Form className="flex flex-col gap-6 p-8">
-                    <Input
-                        error={Boolean(errors.name && touched.name)}
-                        // success={!Boolean(errors.name && touched.name)}
-                        {...getFieldProps('name')}
-                        label="Name"
-                    />
-                    <Input
-                        error={Boolean(errors.host && touched.host)}
-                        // success={!Boolean(errors.host && touched.host)}
-                        {...getFieldProps('host')}
-                        label="Host"
-                    />
-                    <Input
-                        error={Boolean(errors.username && touched.username)}
-                        // success={!Boolean(errors.username && touched.username)}
-                        {...getFieldProps('username')}
-                        label="Username"
-                    />
-                    <Input
-                        error={Boolean(errors.password && touched.password)}
-                        // success={!Boolean(errors.password && touched.password)}
-                        {...getFieldProps('password')}
-                        label="Password"
-                        type="password"
-                    />
+                    <div>
+                        <Input
+                            error={Boolean(errors.name && touched.name)}
+                            // success={!Boolean(errors.name && touched.name)}
+                            {...getFieldProps('name')}
+                            label="Name"
+                        />
+                        <ErrorField message={errors.name} />
+                    </div>
+                    <div>
+                        <Input
+                            error={Boolean(errors.host && touched.host)}
+                            // success={!Boolean(errors.host && touched.host)}
+                            {...getFieldProps('host')}
+                            label="Host"
+                        />
+                        <ErrorField message={errors.host} />
+                    </div>
+                    <div>
+                        <Input
+                            error={Boolean(errors.username && touched.username)}
+                            // success={!Boolean(errors.username && touched.username)}
+                            {...getFieldProps('username')}
+                            label="Username"
+                        />
+                        <ErrorField message={errors.username} />
+                    </div>
+
+                    <div>
+                        <Input
+                            error={Boolean(errors.password && touched.password)}
+                            // success={!Boolean(errors.password && touched.password)}
+                            {...getFieldProps('password')}
+                            label="Password"
+                            type="password"
+                        />
+                        <ErrorField message={errors.password} />
+                    </div>
+
                     <Button
                         onClick={() => testServerConnection()}
                         size="sm"
@@ -128,6 +145,8 @@ const ServerForm: React.FC<Props> = ({ server }) => {
                             <Icon name={AppIcons.plus} />
                         </Button>
                     </div>
+                    <ErrorField message={errors.os} />
+
                     <Select
                         onChange={(e) => {
                             setFieldValue('applications', [{ id: e }]);
@@ -139,6 +158,8 @@ const ServerForm: React.FC<Props> = ({ server }) => {
                             <Option value={item.id + ''}> {item.name} </Option>
                         ))}
                     </Select>
+                    <ErrorField message={errors.applications} />
+
                     <Button
                         size="sm"
                         type="submit"
